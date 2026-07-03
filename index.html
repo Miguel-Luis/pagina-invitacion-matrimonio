@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrea &amp; Luis Miguel — ¡Nos Casamos!</title>
+  <meta name="description" content="Invitación al matrimonio de Andrea y Luis Miguel — 12 de septiembre de 2026, Manizales, Colombia." />
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <meta name="theme-color" content="#f8f5ee" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Textura de lienzo sobre toda la página -->
+  <div class="canvas-texture" aria-hidden="true"></div>
+
+  <!-- Siluetas de aves cruzando el fondo (pobladas por effects.js) -->
+  <div class="sky-birds" id="skyBirds" aria-hidden="true"></div>
+
+  <!-- ══ Definiciones SVG: flora pintada al estilo de la tarjeta ══ -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Bordes desplazados con ruido: simula el filo irregular de la acuarela -->
+      <filter id="watercolorEdge" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" />
+      </filter>
+
+      <!-- Hoja de cafeto: elipse puntiaguda, como en la tarjeta -->
+      <path id="coffeeLeaf" d="M0 0 C5 -13 26 -19 44 -11 C31 3 11 9 0 0 Z" />
+    </defs>
+
+    <!-- Mata de café: tallo central, ramas horizontales, hojas oscuras
+         y racimos de cerezas rojas — copiada del cafeto de la tarjeta -->
+    <symbol id="coffeePlant" viewBox="0 0 300 380">
+      <g filter="url(#watercolorEdge)">
+        <path d="M149 378 C147 310 149 180 151 56" stroke="#55644a" stroke-width="7" fill="none" stroke-linecap="round" />
+
+        <g stroke="#5d6e4c" stroke-width="3.5" fill="none" stroke-linecap="round">
+          <path d="M150 96 C128 90 108 88 84 94" />
+          <path d="M150 104 C172 98 194 96 218 102" />
+          <path d="M150 158 C122 150 96 148 64 156" />
+          <path d="M150 166 C180 158 210 156 240 164" />
+          <path d="M150 224 C118 216 86 216 52 226" />
+          <path d="M150 232 C184 224 218 224 252 234" />
+          <path d="M150 292 C116 284 82 286 46 298" />
+          <path d="M150 300 C186 292 222 294 258 306" />
+        </g>
+
+        <!-- Hojas -->
+        <use href="#coffeeLeaf" transform="translate(153 60) rotate(-64) scale(0.9)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(149 60) scale(-0.9 0.9) rotate(-64)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(152 78) rotate(-30) scale(0.75)" fill="#8c9a6e" />
+        <use href="#coffeeLeaf" transform="translate(148 78) scale(-0.75 0.75) rotate(-30)" fill="#5d6e4c" />
+
+        <use href="#coffeeLeaf" transform="translate(218 102) rotate(-14)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(190 99) rotate(-38) scale(0.8)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(204 108) rotate(26) scale(0.85)" fill="#8c9a6e" />
+        <use href="#coffeeLeaf" transform="translate(84 94) scale(-1 1) rotate(-14)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(112 91) scale(-0.8 0.8) rotate(-38)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(98 100) scale(-0.85 0.85) rotate(26)" fill="#8c9a6e" />
+
+        <use href="#coffeeLeaf" transform="translate(240 164) rotate(-12)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(205 160) rotate(-36) scale(0.85)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(220 172) rotate(28) scale(0.9)" fill="#8c9a6e" />
+        <use href="#coffeeLeaf" transform="translate(64 156) scale(-1 1) rotate(-12)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(100 152) scale(-0.85 0.85) rotate(-36)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(84 166) scale(-0.9 0.9) rotate(28)" fill="#8c9a6e" />
+
+        <use href="#coffeeLeaf" transform="translate(252 234) rotate(-10) scale(1.05)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(210 228) rotate(-34) scale(0.9)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(228 242) rotate(30) scale(0.95)" fill="#8c9a6e" />
+        <use href="#coffeeLeaf" transform="translate(52 226) scale(-1.05 1.05) rotate(-10)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(96 220) scale(-0.9 0.9) rotate(-34)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(76 236) scale(-0.95 0.95) rotate(30)" fill="#8c9a6e" />
+
+        <use href="#coffeeLeaf" transform="translate(258 306) rotate(-8) scale(1.1)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(212 296) rotate(-30) scale(0.95)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(232 314) rotate(32)" fill="#8c9a6e" />
+        <use href="#coffeeLeaf" transform="translate(46 298) scale(-1.1 1.1) rotate(-8)" fill="#5d6e4c" />
+        <use href="#coffeeLeaf" transform="translate(94 288) scale(-0.95 0.95) rotate(-30)" fill="#71825c" />
+        <use href="#coffeeLeaf" transform="translate(70 308) scale(-1 1) rotate(32)" fill="#8c9a6e" />
+
+        <!-- Racimos de cerezas de café -->
+        <g fill="#a93b4f">
+          <circle cx="166" cy="110" r="5" /><circle cx="175" cy="114" r="4.6" fill="#c86a7a" /><circle cx="170" cy="121" r="4.2" />
+          <circle cx="128" cy="170" r="5" /><circle cx="119" cy="174" r="4.5" /><circle cx="125" cy="181" r="4" fill="#c86a7a" />
+          <circle cx="180" cy="242" r="5.2" fill="#c86a7a" /><circle cx="189" cy="246" r="4.6" /><circle cx="184" cy="253" r="4.2" />
+          <circle cx="120" cy="306" r="5" /><circle cx="111" cy="310" r="4.5" fill="#c86a7a" /><circle cx="117" cy="317" r="4" />
+          <circle cx="224" cy="316" r="4.6" /><circle cx="232" cy="322" r="4" fill="#c86a7a" />
+        </g>
+      </g>
+    </symbol>
+
+    <!-- Mata de plátano: pseudotallo y hojas grandes con nervadura,
+         en los verdes suaves de las laderas de la tarjeta -->
+    <symbol id="plantainPlant" viewBox="0 0 340 420">
+      <g filter="url(#watercolorEdge)">
+        <!-- Hoja alta trasera -->
+        <path d="M182 242 C160 180 158 120 178 66 C200 116 206 186 194 244 Z" fill="#b3bd97" />
+        <path d="M186 238 C176 180 176 120 180 72" stroke="#8c9a6e" stroke-width="2.5" fill="none" opacity="0.5" />
+
+        <!-- Hoja grande izquierda -->
+        <path d="M180 244 C136 192 62 178 10 202 C22 232 108 262 178 252 Z" fill="#9aa87c" />
+        <path d="M179 248 C120 222 60 204 14 206" stroke="#5d6e4c" stroke-width="2.5" fill="none" opacity="0.45" />
+        <path d="M120 214 L110 232 M86 208 L76 226 M52 205 L44 220" stroke="#6f7f55" stroke-width="1.6" opacity="0.35" />
+
+        <!-- Hoja grande derecha -->
+        <path d="M180 246 C226 196 300 184 334 210 C322 238 244 266 184 254 Z" fill="#8c9a6e" />
+        <path d="M181 250 C240 226 300 208 332 212" stroke="#5d6e4c" stroke-width="2.5" fill="none" opacity="0.45" />
+        <path d="M226 222 L238 238 M258 212 L270 230 M290 205 L300 222" stroke="#5d6e4c" stroke-width="1.6" opacity="0.35" />
+
+        <!-- Pseudotallo -->
+        <path d="M158 420 C154 348 158 286 166 240 L196 242 C198 296 200 356 202 420 Z" fill="#a9b48b" />
+        <path d="M170 416 C168 350 170 300 176 248" stroke="#c3cba6" stroke-width="5" fill="none" opacity="0.6" />
+
+        <!-- Hojas caídas delanteras -->
+        <path d="M186 250 C232 260 268 292 282 332 C246 330 202 296 182 258 Z" fill="#6f7f55" />
+        <path d="M188 254 C230 272 260 300 278 328" stroke="#4d5a40" stroke-width="2" fill="none" opacity="0.4" />
+        <path d="M172 252 C130 264 96 296 84 334 C120 332 158 298 176 260 Z" fill="#7d8c63" />
+        <path d="M170 256 C132 274 104 302 88 330" stroke="#4d5a40" stroke-width="2" fill="none" opacity="0.4" />
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- Navegación mínima (aparece al hacer scroll) -->
+  <nav class="top-nav" id="topNav" aria-label="Navegación principal">
+    <a class="top-nav__brand" href="#hero">A <span>&amp;</span> L</a>
+    <div class="top-nav__links">
+      <a href="#countdown">La cuenta</a>
+      <a href="#frases">Frases</a>
+      <a href="#ubicacion">Ubicación</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════ 1 · HERO ══════════════════ -->
+  <header class="hero" id="hero">
+    <div class="hero__wash" aria-hidden="true">
+      <span class="wash wash--sky"></span>
+      <span class="wash wash--green"></span>
+      <span class="wash wash--cream"></span>
+      <span class="wash wash--cherry"></span>
+    </div>
+
+    <canvas class="hero__petals" id="petalsCanvas" aria-hidden="true"></canvas>
+
+    <!-- Flora pintada asomándose por los bordes, como en la tarjeta -->
+    <svg class="flora flora--plantain-hero" aria-hidden="true"><use href="#plantainPlant" /></svg>
+    <svg class="flora flora--coffee-hero" aria-hidden="true"><use href="#coffeePlant" /></svg>
+
+    <div class="hero__content reveal">
+      <p class="hero__eyebrow">Con la bendición de Dios y de nuestras familias</p>
+
+      <h1 class="hero__title">
+        <span class="hero__title-script">Andrea</span>
+        <span class="hero__amp" aria-hidden="true">&amp;</span>
+        <span class="hero__title-script">Luis&nbsp;Miguel</span>
+      </h1>
+
+      <p class="hero__subtitle">¡Nos casamos!</p>
+
+      <div class="brush-underline" aria-hidden="true">
+        <svg viewBox="0 0 300 14" preserveAspectRatio="none">
+          <path class="brush-underline__path" d="M4 9 C60 3 120 12 160 7 C210 2 260 10 296 6" fill="none"/>
+        </svg>
+      </div>
+
+      <p class="hero__date">Manizales · 12 de septiembre de 2026</p>
+    </div>
+
+    <!-- Video enmarcado como una pintura -->
+    <figure class="video-frame reveal reveal--delay">
+      <div class="video-frame__splash" aria-hidden="true"></div>
+      <div class="video-frame__mat">
+        <video
+          id="heroVideo"
+          class="video-frame__video"
+          src="assets/pedida_de_mano_manizales.mp4"
+          preload="metadata"
+          playsinline
+        ></video>
+        <button class="video-frame__play" id="videoPlayButton" type="button" aria-label="Reproducir video de la pedida de mano">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+        </button>
+      </div>
+      <figcaption class="video-frame__caption">Así empezó todo — la pedida de mano, Manizales</figcaption>
+    </figure>
+
+    <a class="hero__scroll-hint" href="#countdown" aria-label="Continuar hacia la cuenta regresiva">
+      <span></span>
+    </a>
+  </header>
+
+  <!-- Borde de pincelada entre secciones -->
+  <div class="brush-divider brush-divider--green" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,55 C120,20 260,80 420,50 C580,20 700,75 880,45 C1060,15 1200,70 1440,40 L1440,90 L0,90 Z"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════ 2 · CUENTA REGRESIVA ══════════════════ -->
+  <section class="countdown" id="countdown" aria-labelledby="countdownTitle">
+    <svg class="flora flora--coffee-countdown" aria-hidden="true"><use href="#coffeePlant" /></svg>
+    <div class="section-head reveal">
+      <p class="section-head__eyebrow">Falta cada vez menos</p>
+      <h2 class="section-head__title" id="countdownTitle">La cuenta regresiva</h2>
+    </div>
+
+    <div class="countdown__grid reveal" id="countdownGrid" role="timer" aria-live="polite">
+      <div class="count-card count-card--sky">
+        <span class="count-card__value" data-countdown-unit="days">–</span>
+        <span class="count-card__label">Días</span>
+      </div>
+      <div class="count-card count-card--green">
+        <span class="count-card__value" data-countdown-unit="hours">–</span>
+        <span class="count-card__label">Horas</span>
+      </div>
+      <div class="count-card count-card--cream">
+        <span class="count-card__value" data-countdown-unit="minutes">–</span>
+        <span class="count-card__label">Minutos</span>
+      </div>
+      <div class="count-card count-card--cherry">
+        <span class="count-card__value" data-countdown-unit="seconds">–</span>
+        <span class="count-card__label">Segundos</span>
+      </div>
+    </div>
+
+    <p class="countdown__target reveal">
+      Sábado, 12 de septiembre de 2026 · 2:00 p.&nbsp;m. <span class="countdown__tz">(hora de Colombia)</span>
+    </p>
+
+    <p class="countdown__finished" id="countdownFinished" hidden>
+      ¡Llegó el gran día! <span>Hoy celebramos nuestro amor.</span>
+    </p>
+  </section>
+
+  <div class="brush-divider brush-divider--paper" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,45 C180,75 320,15 520,50 C720,85 860,25 1080,55 C1260,80 1360,35 1440,50 L1440,90 L0,90 Z"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════ 3 · FRASES ══════════════════ -->
+  <section class="quotes" id="frases" aria-labelledby="quotesTitle">
+    <svg class="flora flora--plantain-quotes" aria-hidden="true"><use href="#plantainPlant" /></svg>
+    <div class="section-head reveal">
+      <p class="section-head__eyebrow">Palabras que nos acompañan</p>
+      <h2 class="section-head__title" id="quotesTitle">Frases de amor</h2>
+    </div>
+
+    <div class="quotes__grid">
+      <blockquote class="quote-card reveal">
+        <span class="quote-card__mark" aria-hidden="true">“</span>
+        <p>El amor es paciente, es bondadoso. Todo lo disculpa, todo lo cree, todo lo espera, todo lo soporta.</p>
+        <cite>1 Corintios 13</cite>
+      </blockquote>
+
+      <blockquote class="quote-card quote-card--feature reveal">
+        <span class="quote-card__mark" aria-hidden="true">“</span>
+        <p>Deseo poco y lo poco que deseo, lo deseo poco.</p>
+        <cite>San Francisco de Asís</cite>
+      </blockquote>
+
+      <blockquote class="quote-card reveal">
+        <span class="quote-card__mark" aria-hidden="true">“</span>
+        <p>Para criaturas pequeñas como nosotros, la inmensidad solo es soportable a través del amor.</p>
+        <cite>Carl Sagan</cite>
+      </blockquote>
+    </div>
+
+    <div class="quotes__monogram reveal" aria-hidden="true">
+      <span class="quotes__monogram-script">A &amp; L</span>
+      <div class="brush-underline brush-underline--small">
+        <svg viewBox="0 0 300 14" preserveAspectRatio="none">
+          <path class="brush-underline__path" d="M4 9 C60 3 120 12 160 7 C210 2 260 10 296 6" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="brush-divider brush-divider--sky" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,50 C160,20 300,78 480,48 C660,18 820,72 1000,42 C1180,15 1320,65 1440,45 L1440,90 L0,90 Z"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════ 4 · UBICACIÓN ══════════════════ -->
+  <section class="location" id="ubicacion" aria-labelledby="locationTitle">
+    <svg class="flora flora--coffee-location" aria-hidden="true"><use href="#coffeePlant" /></svg>
+    <div class="section-head reveal">
+      <p class="section-head__eyebrow">Te esperamos allí</p>
+      <h2 class="section-head__title" id="locationTitle">La ceremonia</h2>
+    </div>
+
+    <div class="location__details reveal">
+      <p class="location__place">Parroquia Madre del Salvador</p>
+      <p class="location__city">Manizales, Caldas · Colombia</p>
+    </div>
+
+    <div class="map-frame reveal">
+      <div class="map-frame__mat">
+        <iframe
+          title="Mapa — Parroquia Madre del Salvador"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1178.5533063558432!2d-75.53307653039292!3d5.0678194355441954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e477003ec03ae45%3A0xbea47b0275426aea!2sParroquia%20Madre%20del%20Salvador!5e1!3m2!1ses-419!2sco!4v1783034611677!5m2!1ses-419!2sco"
+          width="100%"
+          height="450"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="location__cta reveal">
+      <a
+        class="painted-button"
+        href="https://www.google.com/maps/search/?api=1&query=Parroquia+Madre+del+Salvador+Manizales"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Cómo llegar</a>
+    </div>
+  </section>
+
+  <!-- ══════════════════ PIE ══════════════════ -->
+  <footer class="footer">
+    <div class="footer__birds" aria-hidden="true">
+      <svg class="bird bird--footer" viewBox="0 0 60 24"><path d="M2 18 Q16 2 30 14 Q44 2 58 18" fill="none"/></svg>
+    </div>
+    <p class="footer__names">Andrea <span>&amp;</span> Luis Miguel</p>
+    <p class="footer__date">12 · 09 · 2026</p>
+  </footer>
+
+  <!-- Módulos (scripts clásicos con espacios de nombres, sin variables globales sueltas) -->
+  <script src="js/countdown.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
