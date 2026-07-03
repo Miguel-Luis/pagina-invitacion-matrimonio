@@ -73,7 +73,11 @@ window.WeddingApp.effects = (function () {
      cielo ya esté poblado al cargar la página. */
 
   const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-  const BIRD_COUNT = 9;
+
+  /** Menos aves en pantallas pequeñas: cada morfado SMIL cuesta CPU. */
+  function getBirdCount() {
+    return window.matchMedia("(max-width: 640px)").matches ? 6 : 9;
+  }
 
   /* Tres posturas del ala: arriba, planeo y abajo (mismo nº de puntos
      para que el navegador pueda interpolar el morfado). Las puntas
@@ -180,7 +184,8 @@ window.WeddingApp.effects = (function () {
     const skyContainer = document.getElementById("skyBirds");
     if (!skyContainer || prefersReducedMotion) return;
 
-    for (let i = 0; i < BIRD_COUNT; i += 1) {
+    const birdCount = getBirdCount();
+    for (let i = 0; i < birdCount; i += 1) {
       skyContainer.appendChild(createBirdElement());
     }
   }
@@ -231,6 +236,8 @@ window.WeddingApp.effects = (function () {
 
     const context = canvas.getContext("2d");
     let petals = [];
+    let isAnimating = false;
+    let isHeroVisible = true;
 
     function resizeCanvas() {
       canvas.width = canvas.offsetWidth;
@@ -245,6 +252,8 @@ window.WeddingApp.effects = (function () {
     }
 
     function updateAndDrawFrame(timestamp) {
+      if (!isAnimating) return;
+
       context.clearRect(0, 0, canvas.width, canvas.height);
 
       petals.forEach(function (petal, index) {
@@ -267,13 +276,44 @@ window.WeddingApp.effects = (function () {
       window.requestAnimationFrame(updateAndDrawFrame);
     }
 
+    /* El bucle solo corre cuando el hero está en pantalla Y la
+       pestaña visible: fuera de eso, cero trabajo por frame. */
+    function syncAnimationState() {
+      const shouldAnimate = isHeroVisible && !document.hidden;
+      if (shouldAnimate && !isAnimating) {
+        isAnimating = true;
+        window.requestAnimationFrame(updateAndDrawFrame);
+      } else if (!shouldAnimate) {
+        isAnimating = false;
+      }
+    }
+
     resizeCanvas();
     resetPetals();
+
+    // Solo se regeneran los pétalos si cambió el ancho: en móvil el
+    // scroll dispara "resize" al ocultarse la barra de direcciones.
+    let lastWidth = canvas.offsetWidth;
     window.addEventListener("resize", function () {
-      resizeCanvas();
-      resetPetals();
+      if (canvas.offsetWidth !== lastWidth) {
+        lastWidth = canvas.offsetWidth;
+        resizeCanvas();
+        resetPetals();
+      } else if (canvas.height !== canvas.offsetHeight) {
+        canvas.height = canvas.offsetHeight;
+      }
     });
-    window.requestAnimationFrame(updateAndDrawFrame);
+
+    if ("IntersectionObserver" in window) {
+      const heroObserver = new IntersectionObserver(function (entries) {
+        isHeroVisible = entries[0].isIntersecting;
+        syncAnimationState();
+      });
+      heroObserver.observe(canvas);
+    }
+
+    document.addEventListener("visibilitychange", syncAnimationState);
+    syncAnimationState();
   }
 
   /* ── API pública del módulo ─────────────────────────────────── */

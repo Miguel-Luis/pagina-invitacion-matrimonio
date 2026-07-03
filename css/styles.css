@@ -46,12 +46,13 @@ body {
   font-family: var(--font-serif);
   color: var(--ink);
   background-color: var(--paper);
-  /* Veladuras muy suaves de acuarela sobre el papel */
+  /* Veladuras muy suaves de acuarela sobre el papel.
+     Sin background-attachment: fixed — en móvil obliga a repintar
+     el fondo en cada frame de scroll. */
   background-image:
     radial-gradient(1100px 600px at 85% -5%, rgba(203, 214, 226, 0.35), transparent 65%),
     radial-gradient(900px 700px at -10% 30%, rgba(179, 189, 151, 0.22), transparent 60%),
     radial-gradient(1000px 800px at 110% 85%, rgba(238, 217, 168, 0.28), transparent 60%);
-  background-attachment: fixed;
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -69,8 +70,10 @@ iframe {
   inset: 0;
   z-index: 40;
   pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: multiply;
+  /* Sin mix-blend-mode: un blend a pantalla completa obliga a
+     recomponer toda la página en cada frame. El grano con alfa
+     bajo logra el mismo efecto visual. */
+  opacity: 0.55;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
 }
 
@@ -210,20 +213,21 @@ iframe {
 }
 
 /* ── Manchas de acuarela (blobs) ─────────────────────────────── */
+/* El difuminado se logra con degradados radiales, no con
+   filter: blur() — desenfocar superficies de media pantalla en
+   cada frame es lo más caro que puede hacer una GPU móvil.
+   La animación solo toca transform (compositor, sin repintado). */
 .wash {
   position: absolute;
-  border-radius: 58% 42% 55% 45% / 45% 58% 42% 55%;
-  filter: blur(50px);
-  mix-blend-mode: multiply;
-  opacity: 0.5;
+  opacity: 0.55;
   will-change: transform;
   animation: wash-drift 26s ease-in-out infinite alternate;
 }
 
-.wash--sky    { width: 55vw; height: 45vh; top: -12%; right: -10%; background: var(--sky); animation-duration: 30s; }
-.wash--green  { width: 48vw; height: 52vh; bottom: -18%; left: -12%; background: var(--green-soft); animation-duration: 24s; }
-.wash--cream  { width: 34vw; height: 30vh; top: 42%; left: -8%;  background: var(--cream); animation-duration: 34s; }
-.wash--cherry { width: 20vw; height: 18vh; top: 18%; left: 16%;  background: var(--cherry-soft); opacity: 0.22; animation-duration: 20s; }
+.wash--sky    { width: 55vw; height: 45vh; top: -12%; right: -10%; background: radial-gradient(closest-side, rgba(203, 214, 226, 0.9), rgba(203, 214, 226, 0.4) 55%, transparent 75%); animation-duration: 30s; }
+.wash--green  { width: 48vw; height: 52vh; bottom: -18%; left: -12%; background: radial-gradient(closest-side, rgba(179, 189, 151, 0.85), rgba(179, 189, 151, 0.35) 55%, transparent 75%); animation-duration: 24s; }
+.wash--cream  { width: 34vw; height: 30vh; top: 42%; left: -8%;  background: radial-gradient(closest-side, rgba(238, 217, 168, 0.9), rgba(238, 217, 168, 0.4) 55%, transparent 75%); animation-duration: 34s; }
+.wash--cherry { width: 20vw; height: 18vh; top: 18%; left: 16%;  background: radial-gradient(closest-side, rgba(200, 106, 122, 0.7), transparent 72%); opacity: 0.3; animation-duration: 20s; }
 
 @keyframes wash-drift {
   from { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
@@ -234,6 +238,7 @@ iframe {
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh; /* altura real del viewport móvil, sin saltos */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -439,13 +444,14 @@ iframe {
   position: absolute;
   inset: -9% -7%;
   z-index: -1;
+  /* Solo degradados: los propios stops difuminan el borde sin
+     necesidad de filter: blur() */
   background:
-    radial-gradient(45% 55% at 18% 25%, rgba(179, 189, 151, 0.55), transparent 70%),
-    radial-gradient(50% 45% at 85% 20%, rgba(203, 214, 226, 0.6), transparent 70%),
-    radial-gradient(40% 50% at 80% 85%, rgba(238, 217, 168, 0.55), transparent 70%),
-    radial-gradient(30% 35% at 12% 82%, rgba(200, 106, 122, 0.35), transparent 70%);
+    radial-gradient(45% 55% at 18% 25%, rgba(179, 189, 151, 0.5), transparent 68%),
+    radial-gradient(50% 45% at 85% 20%, rgba(203, 214, 226, 0.55), transparent 68%),
+    radial-gradient(40% 50% at 80% 85%, rgba(238, 217, 168, 0.5), transparent 68%),
+    radial-gradient(30% 35% at 12% 82%, rgba(200, 106, 122, 0.32), transparent 68%);
   border-radius: 60% 40% 55% 45% / 45% 60% 40% 55%;
-  filter: blur(14px);
 }
 
 .video-frame__mat {
@@ -964,6 +970,30 @@ iframe {
   color: var(--ink-soft);
 }
 
+/* ── Renderizado diferido de secciones bajo el pliegue ───────── */
+/* content-visibility: auto — el navegador no calcula layout ni
+   pinta las secciones hasta que se acercan al viewport. El tamaño
+   intrínseco reserva el espacio para que el scroll no salte. */
+.countdown {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+.quotes {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+.location {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1500px;
+}
+
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 320px;
+}
+
 /* ── Aparición tipo acuarela al hacer scroll ─────────────────── */
 .reveal {
   opacity: 0;
@@ -1033,8 +1063,6 @@ iframe {
   }
 
   .top-nav__links a { font-size: 0.68rem; }
-
-  .wash { filter: blur(34px); }
 
   /* En pantallas pequeñas la flora se recoge hacia los bordes */
   .flora { opacity: 0.85; }

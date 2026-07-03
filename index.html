@@ -11,10 +11,20 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Carga de fuentes sin bloquear el primer render (async CSS):
+       se aplica como "print" y pasa a "all" al terminar de descargar -->
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400&display=swap"
     rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
   />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+  </noscript>
 
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -153,7 +163,7 @@
 
     <!-- Los novios de la tarjeta, como veladura tras el título -->
     <div class="hero__couple" aria-hidden="true">
-      <img src="assets/novios.png" alt="" />
+      <img src="assets/novios.jpg" alt="" width="683" height="1696" decoding="async" />
     </div>
 
     <canvas class="hero__petals" id="petalsCanvas" aria-hidden="true"></canvas>
@@ -302,7 +312,7 @@
   <section class="location" id="ubicacion" aria-labelledby="locationTitle">
     <!-- La capilla de la tarjeta, como veladura de fondo -->
     <div class="location__chapel" aria-hidden="true">
-      <img src="assets/iglesia.png" alt="" loading="lazy" />
+      <img src="assets/iglesia.png" alt="" width="679" height="526" loading="lazy" decoding="async" />
     </div>
     <svg class="flora flora--coffee-location" aria-hidden="true"><use href="#coffeePlant" /></svg>
     <div class="section-head reveal">
