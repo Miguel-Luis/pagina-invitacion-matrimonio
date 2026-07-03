@@ -64,6 +64,13 @@ iframe {
   display: block;
 }
 
+/* Los atributos width/height del HTML solo deben aportar la
+   proporción (evitan saltos de layout); la altura real siempre
+   sigue al ancho para no deformar la imagen. */
+img {
+  height: auto;
+}
+
 /* ── Textura de lienzo (grano de papel via feTurbulence) ─────── */
 .canvas-texture {
   position: fixed;
