@@ -79,43 +79,90 @@ window.WeddingApp.effects = (function () {
     return window.matchMedia("(max-width: 640px)").matches ? 6 : 9;
   }
 
-  /* Tres posturas del ala: arriba, planeo y abajo (mismo nº de puntos
-     para que el navegador pueda interpolar el morfado). Las puntas
-     salen del viewBox a propósito — .bird tiene overflow visible —
-     para que la batida sea amplia y visible. */
-  const WING_UP = "M2 -3 Q16 -9 30 10 Q44 -9 58 -3";
-  const WING_GLIDE = "M2 12 Q16 8 30 11 Q44 8 58 12";
-  const WING_DOWN = "M2 25 Q16 31 30 13 Q44 31 58 25";
+  /** Número aleatorio en el rango [min, max). */
+  function randomBetween(min, max) {
+    return min + Math.random() * (max - min);
+  }
+
+  /* Cada especie define sus tres posturas del ala — arriba, planeo y
+     abajo — con el mismo nº de puntos para que el navegador pueda
+     interpolar el morfado, más su propio carácter de vuelo: tamaño,
+     grosor del trazo, nº de batidas por ciclo, velocidad de la batida
+     y duración del ciclo. Las puntas salen del viewBox a propósito —
+     .bird tiene overflow visible — para que la batida sea amplia. */
+  const BIRD_SPECIES = [
+    {
+      // Golondrina: pequeña, alas puntiagudas en flecha, aleteo
+      // rápido y nervioso con planeos cortos.
+      name: "swallow",
+      wingUp: "M8 -4 Q20 -12 30 8 Q40 -12 52 -4",
+      wingGlide: "M6 20 Q18 0 30 10 Q42 0 54 20",
+      wingDown: "M10 25 Q22 30 30 11 Q38 30 50 25",
+      width: [13, 22],
+      strokeWidth: 2.2,
+      flapCount: [3, 6],
+      strokeSeconds: [0.07, 0.11],
+      cycleSeconds: [1.4, 2.8],
+    },
+    {
+      // Gaviota: mediana, alas arqueadas (hombro alto, puntas caídas),
+      // batidas pausadas y planeos amplios.
+      name: "gull",
+      wingUp: "M2 -3 Q16 -9 30 10 Q44 -9 58 -3",
+      wingGlide: "M2 17 Q16 3 30 12 Q44 3 58 17",
+      wingDown: "M2 25 Q16 31 30 13 Q44 31 58 25",
+      width: [20, 32],
+      strokeWidth: 2.4,
+      flapCount: [2, 5],
+      strokeSeconds: [0.12, 0.18],
+      cycleSeconds: [2.2, 4.4],
+    },
+    {
+      // Gavilán: grande, alas anchas y casi rectas de envergadura
+      // completa; apenas una o dos batidas lentas y mucho planeo.
+      name: "hawk",
+      wingUp: "M0 2 Q14 -6 30 9 Q46 -6 60 2",
+      wingGlide: "M0 12 Q15 5 30 10 Q45 5 60 12",
+      wingDown: "M0 20 Q14 26 30 12 Q46 26 60 20",
+      width: [28, 42],
+      strokeWidth: 2.8,
+      flapCount: [1, 3],
+      strokeSeconds: [0.2, 0.3],
+      cycleSeconds: [3.5, 6],
+    },
+  ];
 
   /**
    * Ciclo de aleteo realista: unas pocas batidas rápidas seguidas de
    * un planeo largo con las alas extendidas, como hacen las aves de
    * verdad. keyTimes concentra las batidas al inicio del ciclo y
-   * reserva el resto para planear.
+   * reserva el resto para planear. La cadencia sale de la especie.
    */
-  function createWingFlapAnimation() {
-    const flapCount = 2 + Math.floor(Math.random() * 3); // 2 a 4 batidas
-    const cycleSeconds = 2.2 + Math.random() * 2.2;      // ciclo completo
-    const strokeSeconds = 0.12 + Math.random() * 0.06;   // media batida
+  function createWingFlapAnimation(species) {
+    const flapCount =
+      species.flapCount[0] +
+      Math.floor(Math.random() * (species.flapCount[1] - species.flapCount[0] + 1));
+    const cycleSeconds = randomBetween(species.cycleSeconds[0], species.cycleSeconds[1]);
+    const strokeSeconds = randomBetween(species.strokeSeconds[0], species.strokeSeconds[1]);
 
-    const frames = [WING_GLIDE];
+    const frames = [species.wingGlide];
     const times = [0];
     let elapsed = 0;
 
     for (let i = 0; i < flapCount; i += 1) {
-      frames.push(WING_UP);
+      frames.push(species.wingUp);
       elapsed += strokeSeconds / cycleSeconds;
       times.push(elapsed);
-      frames.push(WING_DOWN);
+      frames.push(species.wingDown);
       elapsed += strokeSeconds / cycleSeconds;
       times.push(elapsed);
     }
 
     // Vuelta al planeo... y alas quietas hasta cerrar el ciclo.
-    frames.push(WING_GLIDE);
+    frames.push(species.wingGlide);
     elapsed += strokeSeconds / cycleSeconds;
     times.push(Math.min(elapsed, 0.95));
-    frames.push(WING_GLIDE);
+    frames.push(species.wingGlide);
     times.push(1);
 
     const flap = document.createElementNS(SVG_NAMESPACE, "animate");
@@ -132,14 +179,17 @@ window.WeddingApp.effects = (function () {
   }
 
   function createBirdElement() {
+    const species = BIRD_SPECIES[Math.floor(Math.random() * BIRD_SPECIES.length)];
+
     const bird = document.createElementNS(SVG_NAMESPACE, "svg");
     bird.setAttribute("viewBox", "0 0 60 24");
     bird.classList.add("bird", "bird--sky");
+    bird.style.strokeWidth = species.strokeWidth;
 
     const wings = document.createElementNS(SVG_NAMESPACE, "path");
-    wings.setAttribute("d", WING_GLIDE);
+    wings.setAttribute("d", species.wingGlide);
     wings.setAttribute("fill", "none");
-    wings.appendChild(createWingFlapAnimation());
+    wings.appendChild(createWingFlapAnimation(species));
     bird.appendChild(wings);
 
     // Eje horizontal: la mitad cruza hacia la derecha, la otra hacia la izquierda.
@@ -164,7 +214,8 @@ window.WeddingApp.effects = (function () {
     bird.style.setProperty("--op-far", (0.1 + Math.random() * 0.14).toFixed(2));
 
     bird.style.top = (4 + Math.random() * 42).toFixed(1) + "%";
-    bird.style.width = Math.round(16 + Math.random() * 20) + "px";
+    bird.style.width =
+      Math.round(randomBetween(species.width[0], species.width[1])) + "px";
 
     // Dos animaciones compuestas: la travesía y la respiración de
     // profundidad, cada una con duración y desfase propios para que
