@@ -732,9 +732,43 @@ iframe {
   background: rgba(203, 214, 226, 0.12);
 }
 
+/* Dos lugares (ceremonia y recepción) lado a lado en pantallas
+   anchas; apilados con aire en pantallas pequeñas */
+.location__venues {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+  gap: clamp(2.5rem, 6vw, 4rem);
+  max-width: 74rem;
+  margin: 0 auto;
+}
+
+.venue {
+  display: flex;
+  flex-direction: column;
+}
+
+.venue__tag {
+  align-self: center;
+  margin-bottom: 1.1rem;
+  padding: 0.35rem 1.3rem;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: linear-gradient(150deg, var(--cherry-soft), var(--cherry));
+  border-radius: 46% 54% 48% 52% / 60% 55% 45% 40%;
+  box-shadow: 0 8px 18px -8px rgba(169, 59, 79, 0.55);
+}
+
+.venue .map-frame {
+  flex: 1;
+}
+
 .location__details {
   text-align: center;
-  margin-bottom: clamp(1.8rem, 4vh, 2.6rem);
+  margin-bottom: clamp(1.4rem, 3vh, 2rem);
 }
 
 .location__place {
@@ -769,6 +803,17 @@ iframe {
 
 .map-frame:hover .map-frame__mat {
   transform: rotate(0deg);
+}
+
+/* Variante espejada: inclinación y esquinas hacia el otro lado,
+   para que los dos cuadros no parezcan clonados */
+.map-frame--tilt-left .map-frame__mat {
+  transform: rotate(-0.6deg);
+  border-radius: 16px 40px 18px 44px;
+}
+
+.map-frame--tilt-left .map-frame__mat iframe {
+  border-radius: 10px 30px 12px 34px;
 }
 
 .map-frame__mat iframe {
