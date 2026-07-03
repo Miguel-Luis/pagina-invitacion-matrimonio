@@ -367,6 +367,18 @@ window.WeddingApp.effects = (function () {
     syncAnimationState();
   }
 
+  /* ── Viento en la flora ─────────────────────────────────────── */
+  /* Las hojas del cafeto y del plátano se mecen con SMIL dentro de
+     sus símbolos SVG (ver index.html). SMIL ignora la preferencia de
+     movimiento reducido, así que aquí se pausa su línea de tiempo. */
+
+  function pauseFloraWindIfReducedMotion() {
+    if (!prefersReducedMotion) return;
+    document.querySelectorAll(".flora").forEach(function (svg) {
+      if (typeof svg.pauseAnimations === "function") svg.pauseAnimations();
+    });
+  }
+
   /* ── API pública del módulo ─────────────────────────────────── */
 
   function init() {
@@ -374,6 +386,7 @@ window.WeddingApp.effects = (function () {
     initTopNavAppearance();
     initBackgroundBirds();
     initFloatingPetals();
+    pauseFloraWindIfReducedMotion();
   }
 
   return { init: init };

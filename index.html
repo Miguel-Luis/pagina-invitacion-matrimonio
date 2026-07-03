@@ -50,94 +50,185 @@
     </defs>
 
     <!-- Mata de café: tallo central, ramas horizontales, hojas oscuras
-         y racimos de cerezas rojas — copiada del cafeto de la tarjeta -->
+         y racimos de cerezas rojas — copiada del cafeto de la tarjeta.
+         Cada piso de ramas (con sus hojas y cerezas) se mece con un
+         animateTransform SMIL alrededor de su unión con el tronco:
+         el viento se nota más arriba y con desfases distintos para
+         que el movimiento sea orgánico. SMIL viaja con el símbolo a
+         través de <use>, donde el CSS del documento no llega. -->
     <symbol id="coffeePlant" viewBox="0 0 300 380">
       <g filter="url(#watercolorEdge)">
         <path d="M149 378 C147 310 149 180 151 56" stroke="#55644a" stroke-width="7" fill="none" stroke-linecap="round" />
 
-        <g stroke="#5d6e4c" stroke-width="3.5" fill="none" stroke-linecap="round">
-          <path d="M150 96 C128 90 108 88 84 94" />
-          <path d="M150 104 C172 98 194 96 218 102" />
-          <path d="M150 158 C122 150 96 148 64 156" />
-          <path d="M150 166 C180 158 210 156 240 164" />
-          <path d="M150 224 C118 216 86 216 52 226" />
-          <path d="M150 232 C184 224 218 224 252 234" />
-          <path d="M150 292 C116 284 82 286 46 298" />
-          <path d="M150 300 C186 292 222 294 258 306" />
+        <!-- Corona -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 150 92; 2.6 150 92; 0.7 150 92; -1.8 150 92; 0 150 92"
+            keyTimes="0; 0.3; 0.55; 0.8; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="4.8s" repeatCount="indefinite" />
+          <use href="#coffeeLeaf" transform="translate(153 60) rotate(-64) scale(0.9)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(149 60) scale(-0.9 0.9) rotate(-64)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(152 78) rotate(-30) scale(0.75)" fill="#8c9a6e" />
+          <use href="#coffeeLeaf" transform="translate(148 78) scale(-0.75 0.75) rotate(-30)" fill="#5d6e4c" />
         </g>
 
-        <!-- Hojas -->
-        <use href="#coffeeLeaf" transform="translate(153 60) rotate(-64) scale(0.9)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(149 60) scale(-0.9 0.9) rotate(-64)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(152 78) rotate(-30) scale(0.75)" fill="#8c9a6e" />
-        <use href="#coffeeLeaf" transform="translate(148 78) scale(-0.75 0.75) rotate(-30)" fill="#5d6e4c" />
+        <!-- Piso 1 -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 150 100; 2.2 150 100; 0.5 150 100; -1.5 150 100; 0 150 100"
+            keyTimes="0; 0.32; 0.56; 0.8; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="5.6s" begin="-1.4s" repeatCount="indefinite" />
+          <g stroke="#5d6e4c" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <path d="M150 96 C128 90 108 88 84 94" />
+            <path d="M150 104 C172 98 194 96 218 102" />
+          </g>
+          <use href="#coffeeLeaf" transform="translate(218 102) rotate(-14)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(190 99) rotate(-38) scale(0.8)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(204 108) rotate(26) scale(0.85)" fill="#8c9a6e" />
+          <use href="#coffeeLeaf" transform="translate(84 94) scale(-1 1) rotate(-14)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(112 91) scale(-0.8 0.8) rotate(-38)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(98 100) scale(-0.85 0.85) rotate(26)" fill="#8c9a6e" />
+          <g fill="#a93b4f">
+            <circle cx="166" cy="110" r="5" /><circle cx="175" cy="114" r="4.6" fill="#c86a7a" /><circle cx="170" cy="121" r="4.2" />
+          </g>
+        </g>
 
-        <use href="#coffeeLeaf" transform="translate(218 102) rotate(-14)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(190 99) rotate(-38) scale(0.8)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(204 108) rotate(26) scale(0.85)" fill="#8c9a6e" />
-        <use href="#coffeeLeaf" transform="translate(84 94) scale(-1 1) rotate(-14)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(112 91) scale(-0.8 0.8) rotate(-38)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(98 100) scale(-0.85 0.85) rotate(26)" fill="#8c9a6e" />
+        <!-- Piso 2 -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 150 162; -1.8 150 162; -0.4 150 162; 1.3 150 162; 0 150 162"
+            keyTimes="0; 0.28; 0.54; 0.78; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="6.3s" begin="-3.1s" repeatCount="indefinite" />
+          <g stroke="#5d6e4c" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <path d="M150 158 C122 150 96 148 64 156" />
+            <path d="M150 166 C180 158 210 156 240 164" />
+          </g>
+          <use href="#coffeeLeaf" transform="translate(240 164) rotate(-12)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(205 160) rotate(-36) scale(0.85)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(220 172) rotate(28) scale(0.9)" fill="#8c9a6e" />
+          <use href="#coffeeLeaf" transform="translate(64 156) scale(-1 1) rotate(-12)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(100 152) scale(-0.85 0.85) rotate(-36)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(84 166) scale(-0.9 0.9) rotate(28)" fill="#8c9a6e" />
+          <g fill="#a93b4f">
+            <circle cx="128" cy="170" r="5" /><circle cx="119" cy="174" r="4.5" /><circle cx="125" cy="181" r="4" fill="#c86a7a" />
+          </g>
+        </g>
 
-        <use href="#coffeeLeaf" transform="translate(240 164) rotate(-12)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(205 160) rotate(-36) scale(0.85)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(220 172) rotate(28) scale(0.9)" fill="#8c9a6e" />
-        <use href="#coffeeLeaf" transform="translate(64 156) scale(-1 1) rotate(-12)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(100 152) scale(-0.85 0.85) rotate(-36)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(84 166) scale(-0.9 0.9) rotate(28)" fill="#8c9a6e" />
+        <!-- Piso 3 -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 150 228; 1.5 150 228; 0.3 150 228; -1.1 150 228; 0 150 228"
+            keyTimes="0; 0.3; 0.58; 0.82; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="7.1s" begin="-2.2s" repeatCount="indefinite" />
+          <g stroke="#5d6e4c" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <path d="M150 224 C118 216 86 216 52 226" />
+            <path d="M150 232 C184 224 218 224 252 234" />
+          </g>
+          <use href="#coffeeLeaf" transform="translate(252 234) rotate(-10) scale(1.05)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(210 228) rotate(-34) scale(0.9)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(228 242) rotate(30) scale(0.95)" fill="#8c9a6e" />
+          <use href="#coffeeLeaf" transform="translate(52 226) scale(-1.05 1.05) rotate(-10)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(96 220) scale(-0.9 0.9) rotate(-34)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(76 236) scale(-0.95 0.95) rotate(30)" fill="#8c9a6e" />
+          <g fill="#a93b4f">
+            <circle cx="180" cy="242" r="5.2" fill="#c86a7a" /><circle cx="189" cy="246" r="4.6" /><circle cx="184" cy="253" r="4.2" />
+          </g>
+        </g>
 
-        <use href="#coffeeLeaf" transform="translate(252 234) rotate(-10) scale(1.05)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(210 228) rotate(-34) scale(0.9)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(228 242) rotate(30) scale(0.95)" fill="#8c9a6e" />
-        <use href="#coffeeLeaf" transform="translate(52 226) scale(-1.05 1.05) rotate(-10)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(96 220) scale(-0.9 0.9) rotate(-34)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(76 236) scale(-0.95 0.95) rotate(30)" fill="#8c9a6e" />
-
-        <use href="#coffeeLeaf" transform="translate(258 306) rotate(-8) scale(1.1)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(212 296) rotate(-30) scale(0.95)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(232 314) rotate(32)" fill="#8c9a6e" />
-        <use href="#coffeeLeaf" transform="translate(46 298) scale(-1.1 1.1) rotate(-8)" fill="#5d6e4c" />
-        <use href="#coffeeLeaf" transform="translate(94 288) scale(-0.95 0.95) rotate(-30)" fill="#71825c" />
-        <use href="#coffeeLeaf" transform="translate(70 308) scale(-1 1) rotate(32)" fill="#8c9a6e" />
-
-        <!-- Racimos de cerezas de café -->
-        <g fill="#a93b4f">
-          <circle cx="166" cy="110" r="5" /><circle cx="175" cy="114" r="4.6" fill="#c86a7a" /><circle cx="170" cy="121" r="4.2" />
-          <circle cx="128" cy="170" r="5" /><circle cx="119" cy="174" r="4.5" /><circle cx="125" cy="181" r="4" fill="#c86a7a" />
-          <circle cx="180" cy="242" r="5.2" fill="#c86a7a" /><circle cx="189" cy="246" r="4.6" /><circle cx="184" cy="253" r="4.2" />
-          <circle cx="120" cy="306" r="5" /><circle cx="111" cy="310" r="4.5" fill="#c86a7a" /><circle cx="117" cy="317" r="4" />
-          <circle cx="224" cy="316" r="4.6" /><circle cx="232" cy="322" r="4" fill="#c86a7a" />
+        <!-- Piso 4 -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 150 296; -1.2 150 296; -0.3 150 296; 0.9 150 296; 0 150 296"
+            keyTimes="0; 0.34; 0.6; 0.82; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="7.8s" begin="-5s" repeatCount="indefinite" />
+          <g stroke="#5d6e4c" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <path d="M150 292 C116 284 82 286 46 298" />
+            <path d="M150 300 C186 292 222 294 258 306" />
+          </g>
+          <use href="#coffeeLeaf" transform="translate(258 306) rotate(-8) scale(1.1)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(212 296) rotate(-30) scale(0.95)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(232 314) rotate(32)" fill="#8c9a6e" />
+          <use href="#coffeeLeaf" transform="translate(46 298) scale(-1.1 1.1) rotate(-8)" fill="#5d6e4c" />
+          <use href="#coffeeLeaf" transform="translate(94 288) scale(-0.95 0.95) rotate(-30)" fill="#71825c" />
+          <use href="#coffeeLeaf" transform="translate(70 308) scale(-1 1) rotate(32)" fill="#8c9a6e" />
+          <g fill="#a93b4f">
+            <circle cx="120" cy="306" r="5" /><circle cx="111" cy="310" r="4.5" fill="#c86a7a" /><circle cx="117" cy="317" r="4" />
+            <circle cx="224" cy="316" r="4.6" /><circle cx="232" cy="322" r="4" fill="#c86a7a" />
+          </g>
         </g>
       </g>
     </symbol>
 
     <!-- Mata de plátano: pseudotallo y hojas grandes con nervadura,
-         en los verdes suaves de las laderas de la tarjeta -->
+         en los verdes suaves de las laderas de la tarjeta. Cada hoja
+         se mece con SMIL alrededor de su nacimiento en el pseudotallo,
+         con amplitud y ritmo propios: las láminas grandes ondean más
+         que la hoja alta y que las caídas. -->
     <symbol id="plantainPlant" viewBox="0 0 340 420">
       <g filter="url(#watercolorEdge)">
         <!-- Hoja alta trasera -->
-        <path d="M182 242 C160 180 158 120 178 66 C200 116 206 186 194 244 Z" fill="#b3bd97" />
-        <path d="M186 238 C176 180 176 120 180 72" stroke="#8c9a6e" stroke-width="2.5" fill="none" opacity="0.5" />
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 181 240; 1.7 181 240; 0.4 181 240; -1.2 181 240; 0 181 240"
+            keyTimes="0; 0.3; 0.56; 0.8; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="5.4s" repeatCount="indefinite" />
+          <path d="M182 242 C160 180 158 120 178 66 C200 116 206 186 194 244 Z" fill="#b3bd97" />
+          <path d="M186 238 C176 180 176 120 180 72" stroke="#8c9a6e" stroke-width="2.5" fill="none" opacity="0.5" />
+        </g>
 
         <!-- Hoja grande izquierda -->
-        <path d="M180 244 C136 192 62 178 10 202 C22 232 108 262 178 252 Z" fill="#9aa87c" />
-        <path d="M179 248 C120 222 60 204 14 206" stroke="#5d6e4c" stroke-width="2.5" fill="none" opacity="0.45" />
-        <path d="M120 214 L110 232 M86 208 L76 226 M52 205 L44 220" stroke="#6f7f55" stroke-width="1.6" opacity="0.35" />
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 178 248; -2.6 178 248; -0.7 178 248; -3.1 178 248; 0 178 248"
+            keyTimes="0; 0.28; 0.52; 0.76; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="6.4s" begin="-1.8s" repeatCount="indefinite" />
+          <path d="M180 244 C136 192 62 178 10 202 C22 232 108 262 178 252 Z" fill="#9aa87c" />
+          <path d="M179 248 C120 222 60 204 14 206" stroke="#5d6e4c" stroke-width="2.5" fill="none" opacity="0.45" />
+          <path d="M120 214 L110 232 M86 208 L76 226 M52 205 L44 220" stroke="#6f7f55" stroke-width="1.6" opacity="0.35" />
+        </g>
 
         <!-- Hoja grande derecha -->
-        <path d="M180 246 C226 196 300 184 334 210 C322 238 244 266 184 254 Z" fill="#8c9a6e" />
-        <path d="M181 250 C240 226 300 208 332 212" stroke="#5d6e4c" stroke-width="2.5" fill="none" opacity="0.45" />
-        <path d="M226 222 L238 238 M258 212 L270 230 M290 205 L300 222" stroke="#5d6e4c" stroke-width="1.6" opacity="0.35" />
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 182 250; 2.8 182 250; 0.9 182 250; 2.3 182 250; 0 182 250"
+            keyTimes="0; 0.26; 0.5; 0.74; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="5.7s" begin="-3.2s" repeatCount="indefinite" />
+          <path d="M180 246 C226 196 300 184 334 210 C322 238 244 266 184 254 Z" fill="#8c9a6e" />
+          <path d="M181 250 C240 226 300 208 332 212" stroke="#5d6e4c" stroke-width="2.5" fill="none" opacity="0.45" />
+          <path d="M226 222 L238 238 M258 212 L270 230 M290 205 L300 222" stroke="#5d6e4c" stroke-width="1.6" opacity="0.35" />
+        </g>
 
         <!-- Pseudotallo -->
         <path d="M158 420 C154 348 158 286 166 240 L196 242 C198 296 200 356 202 420 Z" fill="#a9b48b" />
         <path d="M170 416 C168 350 170 300 176 248" stroke="#c3cba6" stroke-width="5" fill="none" opacity="0.6" />
 
         <!-- Hojas caídas delanteras -->
-        <path d="M186 250 C232 260 268 292 282 332 C246 330 202 296 182 258 Z" fill="#6f7f55" />
-        <path d="M188 254 C230 272 260 300 278 328" stroke="#4d5a40" stroke-width="2" fill="none" opacity="0.4" />
-        <path d="M172 252 C130 264 96 296 84 334 C120 332 158 298 176 260 Z" fill="#7d8c63" />
-        <path d="M170 256 C132 274 104 302 88 330" stroke="#4d5a40" stroke-width="2" fill="none" opacity="0.4" />
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 184 252; 1.6 184 252; 0.4 184 252; -1 184 252; 0 184 252"
+            keyTimes="0; 0.32; 0.58; 0.82; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="4.9s" begin="-0.9s" repeatCount="indefinite" />
+          <path d="M186 250 C232 260 268 292 282 332 C246 330 202 296 182 258 Z" fill="#6f7f55" />
+          <path d="M188 254 C230 272 260 300 278 328" stroke="#4d5a40" stroke-width="2" fill="none" opacity="0.4" />
+        </g>
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 174 254; -1.4 174 254; -0.3 174 254; 1.1 174 254; 0 174 254"
+            keyTimes="0; 0.3; 0.55; 0.8; 1" calcMode="spline"
+            keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+            dur="6s" begin="-2.4s" repeatCount="indefinite" />
+          <path d="M172 252 C130 264 96 296 84 334 C120 332 158 298 176 260 Z" fill="#7d8c63" />
+          <path d="M170 256 C132 274 104 302 88 330" stroke="#4d5a40" stroke-width="2" fill="none" opacity="0.4" />
+        </g>
       </g>
     </symbol>
   </svg>
