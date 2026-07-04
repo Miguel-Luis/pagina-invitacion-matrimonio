@@ -245,12 +245,18 @@ window.WeddingApp.effects = (function () {
   /* La flor del café es blanca: pequeños trazos claros a la deriva,
      como pigmento suelto sobre el lienzo. */
 
-  const PETAL_COUNT = 16;
   const PETAL_COLORS = [
     "rgba(255, 253, 247, 0.9)",
     "rgba(238, 217, 168, 0.75)", // crema de la balaustrada
     "rgba(201, 207, 219, 0.7)",  // gris-lavanda del vestido
   ];
+
+  /** Densidad constante: más pétalos cuanto mayor sea el lienzo,
+      con tope para no saturar pantallas grandes ni la CPU. */
+  function getPetalCount(canvasWidth, canvasHeight) {
+    const count = Math.round((canvasWidth * canvasHeight) / 20000);
+    return Math.max(28, Math.min(count, 100));
+  }
 
   function createPetal(canvasWidth, canvasHeight, randomizeY) {
     return {
@@ -297,7 +303,8 @@ window.WeddingApp.effects = (function () {
 
     function resetPetals() {
       petals = [];
-      for (let i = 0; i < PETAL_COUNT; i += 1) {
+      const petalCount = getPetalCount(canvas.width, canvas.height);
+      for (let i = 0; i < petalCount; i += 1) {
         petals.push(createPetal(canvas.width, canvas.height, true));
       }
     }
