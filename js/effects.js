@@ -264,7 +264,7 @@ window.WeddingApp.effects = (function () {
       y: randomizeY ? Math.random() * canvasHeight : -12,
       radius: 2 + Math.random() * 3.5,
       driftX: -0.15 + Math.random() * 0.3,
-      fallSpeed: 0.18 + Math.random() * 0.35,
+      fallSpeed: 0.10 + Math.random() * 0.25,
       wobblePhase: Math.random() * Math.PI * 2,
       wobbleSpeed: 0.004 + Math.random() * 0.008,
       color: PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)],
