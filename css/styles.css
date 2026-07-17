@@ -727,6 +727,169 @@ img {
   color: var(--ink-soft);
 }
 
+/* ── EL VESTIDOR (interludio) ────────────────────────────────── */
+.atelier {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(2.5rem, 7vh, 4.5rem) 1.25rem;
+  background: rgba(238, 217, 168, 0.1);
+}
+
+/* Tres columnas en pantallas anchas: nota · acuarela · nota.
+   En pantallas medianas la acuarela ocupa todo el ancho y las notas
+   pasan debajo, cada una bajo "su" mitad de la pintura (frase bajo
+   la biblioteca, vestimenta bajo el traje). En pantallas angostas
+   quedan apiladas. */
+.atelier__layout {
+  display: grid;
+  grid-template-areas: "phrase art dress";
+  grid-template-columns: minmax(14rem, 1fr) minmax(0, 3fr) minmax(14rem, 1fr);
+  align-items: center;
+  gap: clamp(1.2rem, 2.5vw, 2.5rem);
+  max-width: 92rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .atelier__layout {
+    grid-template-areas:
+      "art art"
+      "phrase dress";
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0;
+    column-gap: clamp(1.5rem, 5vw, 3.5rem);
+  }
+}
+
+/* En pantallas angostas la acuarela completa queda demasiado pequeña
+   para apreciarse: se reemplaza por dos recortes verticales, cada uno
+   presentando "su" nota (biblioteca → frase, perchero → vestimenta). */
+@media (max-width: 620px) {
+  .atelier__layout {
+    grid-template-areas:
+      "library"
+      "phrase"
+      "rack"
+      "dress";
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* La acuarela como veladura: apenas difuminada, fundida con el
+   papel (multiply) y con los bordes desvanecidos por una máscara
+   radial, como pigmento aguado sobre el lienzo. */
+.atelier__art {
+  grid-area: art;
+  width: min(980px, 100%);
+  margin: 0 auto;
+}
+
+/* Recortes verticales para pantallas angostas: ocultos en las demás
+   resoluciones, donde la acuarela completa hace su papel. */
+.atelier__art--library,
+.atelier__art--rack {
+  display: none;
+  width: min(26rem, 100%);
+}
+
+.atelier__art--library { grid-area: library; }
+.atelier__art--rack    { grid-area: rack; }
+
+@media (max-width: 620px) {
+  .atelier__art--full { display: none; }
+
+  .atelier__art--library,
+  .atelier__art--rack {
+    display: block;
+  }
+
+  .atelier__art--rack {
+    margin-top: 2.6rem;
+  }
+}
+
+.atelier__art img {
+  width: 100%;
+  height: auto;
+  opacity: 0.88;
+  filter: blur(1.4px) saturate(0.92);
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(78% 84% at 50% 48%, #000 48%, transparent 99%);
+  mask-image: radial-gradient(78% 84% at 50% 48%, #000 48%, transparent 99%);
+}
+
+/* Notas para los invitados: pequeñas veladuras de texto que flotan
+   junto a la pintura, con el subrayado de pincelada del hero. */
+.atelier__note {
+  position: relative;
+  text-align: center;
+  padding: 1.2rem 0.5rem;
+}
+
+.atelier__note--phrase { grid-area: phrase; }
+.atelier__note--dress  { grid-area: dress; }
+
+/* Mancha de acuarela detrás de cada nota, en el color de "su" lado
+   de la pintura: verde-crema junto a la biblioteca, cereza suave
+   junto al vestido y el traje. */
+.atelier__note::before {
+  content: "";
+  position: absolute;
+  inset: -12% -8%;
+  z-index: -1;
+  border-radius: 55% 45% 60% 40% / 45% 55% 42% 58%;
+}
+
+.atelier__note--phrase::before {
+  background: radial-gradient(closest-side, rgba(179, 189, 151, 0.28), transparent 78%);
+}
+
+.atelier__note--dress::before {
+  background: radial-gradient(closest-side, rgba(200, 106, 122, 0.16), transparent 78%);
+}
+
+.atelier__note-eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.55rem;
+}
+
+.atelier__note-title {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.2vw, 2.3rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.atelier__note .brush-underline--small {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.atelier__note-text {
+  margin-top: 0.9rem;
+  font-style: italic;
+  font-size: clamp(0.98rem, 1.8vw, 1.1rem);
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.atelier__note-text strong {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--green-deep);
+}
+
 /* ── FRASES ──────────────────────────────────────────────────── */
 .quotes {
   position: relative;
@@ -1009,6 +1172,11 @@ img {
 .countdown {
   content-visibility: auto;
   contain-intrinsic-size: auto 640px;
+}
+
+.atelier {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
 }
 
 .quotes {
