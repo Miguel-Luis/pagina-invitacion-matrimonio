@@ -283,29 +283,28 @@
       <p class="hero__date">Manizales · 12 de septiembre de 2026</p>
     </div>
 
-    <!-- Video enmarcado como una pintura. El src lo decide main.js
-         según el dispositivo (480p/720p/1080p) para que en pantallas
-         pequeñas o conexiones lentas solo se descargue el archivo
-         liviano; el selector permite cambiar la calidad a mano. -->
+    <!-- Video enmarcado como una pintura. El video vive en YouTube:
+         se muestra su miniatura y solo se carga el iframe (pesado)
+         cuando el usuario pulsa play. -->
     <figure class="video-frame reveal reveal--delay">
       <div class="video-frame__splash" aria-hidden="true"></div>
       <div class="video-frame__mat">
-        <video
+        <div
           id="heroVideo"
           class="video-frame__video"
-          preload="none"
-          playsinline
-        ></video>
-        <button class="video-frame__play" id="videoPlayButton" type="button" aria-label="Reproducir video de la pedida de mano">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
-        </button>
-        <div class="video-frame__quality" id="videoQuality" role="group" aria-label="Calidad del video">
-          <button type="button" data-quality="480">480p</button>
-          <button type="button" data-quality="720">720p</button>
-          <button type="button" data-quality="1080">1080p</button>
+          data-youtube-id="1mAU5lLJy7Y"
+        >
+          <img
+            class="video-frame__thumb"
+            src="https://i.ytimg.com/vi/1mAU5lLJy7Y/hqdefault.jpg"
+            alt=""
+          />
+          <button class="video-frame__play" id="videoPlayButton" type="button" aria-label="Reproducir video de la pedida de mano">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+          </button>
         </div>
       </div>
-      <figcaption class="video-frame__caption">Aquí va el video que grabaremos con José.</figcaption>
+      <figcaption class="video-frame__caption">HYGGE.</figcaption>
     </figure>
 
     <a class="hero__scroll-hint" href="#countdown" aria-label="Continuar hacia la cuenta regresiva">

@@ -1,0 +1,3 @@
+# Videos pesados: viven en YouTube, no en el repositorio
+# (GitHub rechaza archivos grandes; el embed los reemplaza).
+assets/*.mp4

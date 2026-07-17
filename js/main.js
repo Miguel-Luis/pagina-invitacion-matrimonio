@@ -11,94 +11,34 @@ window.WeddingApp = window.WeddingApp || {};
 
   /* ── Reproductor de video con botón pintado ────────────────── */
 
-  /* Un archivo por calidad: en pantallas pequeñas o conexiones
-     lentas se parte del más liviano y el selector permite subir. */
-  const VIDEO_SOURCES = {
-    "480": "assets/pedida_de_mano_manizales_480p.mp4",
-    "720": "assets/pedida_de_mano_manizales_1280p.mp4",
-    "1080": "assets/pedida_de_mano_manizales_1080p.mp4",
-  };
-
-  function pickInitialVideoQuality() {
-    const connection = navigator.connection;
-    const isConstrained =
-      connection &&
-      (connection.saveData || /(^|-)([23])g$/.test(connection.effectiveType || ""));
-
-    if (isConstrained || window.matchMedia("(max-width: 640px)").matches) {
-      return "480";
-    }
-    // 720p rinde de sobra para el ancho del marco; 1080p queda como
-    // elección manual (p. ej. para pantalla completa).
-    return "720";
-  }
-
+  /* El video vive en YouTube. Se muestra solo la miniatura hasta que
+     el usuario pulsa play, para no cargar el iframe (y su JS) gratis.
+     Ojo: el embed de YouTube no funciona abriendo index.html como
+     archivo (file://); pruébalo con un servidor local o publicado. */
   function initHeroVideoPlayer() {
-    const video = document.getElementById("heroVideo");
+    const container = document.getElementById("heroVideo");
     const playButton = document.getElementById("videoPlayButton");
-    const qualityControl = document.getElementById("videoQuality");
 
-    if (!video || !playButton) return;
+    if (!container || !playButton) return;
 
-    let currentQuality = pickInitialVideoQuality();
-    video.src = VIDEO_SOURCES[currentQuality];
-    video.preload = "metadata";
-
-    function markActiveQualityButton() {
-      if (!qualityControl) return;
-      qualityControl.querySelectorAll("button").forEach(function (button) {
-        button.classList.toggle(
-          "is-active",
-          button.dataset.quality === currentQuality
-        );
-      });
-    }
-
-    /* Cambia de archivo conservando el punto de reproducción y el
-       estado de pausa, para que se sienta como un cambio de calidad
-       y no como volver a empezar. */
-    function switchQuality(quality) {
-      if (quality === currentQuality || !VIDEO_SOURCES[quality]) return;
-
-      const resumeAt = video.currentTime;
-      const wasPaused = video.paused;
-
-      currentQuality = quality;
-      markActiveQualityButton();
-
-      video.src = VIDEO_SOURCES[quality];
-      video.addEventListener(
-        "loadedmetadata",
-        function () {
-          video.currentTime = resumeAt;
-          if (!wasPaused) video.play();
-        },
-        { once: true }
-      );
-      video.load();
-    }
-
-    markActiveQualityButton();
-
-    if (qualityControl) {
-      qualityControl.addEventListener("click", function (event) {
-        const button = event.target.closest("button[data-quality]");
-        if (button) switchQuality(button.dataset.quality);
-      });
-    }
+    const youtubeId = container.dataset.youtubeId;
 
     playButton.addEventListener("click", function () {
-      playButton.classList.add("is-hidden");
-      video.controls = true;
-      if (qualityControl) qualityControl.classList.add("is-visible");
-      video.play();
-    });
+      const iframe = document.createElement("iframe");
+      iframe.className = "video-frame__iframe";
+      iframe.src =
+        "https://www.youtube.com/embed/" +
+        youtubeId +
+        "?autoplay=1&si=RJ4xcSHqzDGVf3yJ";
+      iframe.title = "YouTube video player";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.allowFullscreen = true;
+      iframe.frameBorder = "0";
 
-    // Si el video termina, el botón pintado vuelve a invitar a verlo.
-    video.addEventListener("ended", function () {
-      video.controls = false;
-      if (qualityControl) qualityControl.classList.remove("is-visible");
-      playButton.classList.remove("is-hidden");
+      container.innerHTML = "";
+      container.appendChild(iframe);
     });
   }
 
