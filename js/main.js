@@ -26,16 +26,45 @@ window.WeddingApp = window.WeddingApp || {};
     playButton.addEventListener("click", function () {
       const iframe = document.createElement("iframe");
       iframe.className = "video-frame__iframe";
+      /* start=0 fuerza el inicio desde el segundo cero y vq=hd1080
+         pide la máxima calidad (YouTube puede bajarla si la conexión
+         o el tamaño del reproductor no dan para más). enablejsapi=1
+         permite mandarle comandos al reproductor (volumen). */
       iframe.src =
         "https://www.youtube.com/embed/" +
         youtubeId +
-        "?autoplay=1&si=RJ4xcSHqzDGVf3yJ";
+        "?autoplay=1&start=0&vq=hd1080&rel=0&enablejsapi=1";
       iframe.title = "YouTube video player";
       iframe.allow =
         "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
       iframe.allowFullscreen = true;
       iframe.frameBorder = "0";
+
+      /* Al cargar el iframe, se le pide al reproductor quitar el
+         silencio y subir el volumen al máximo. Se reintenta unas
+         cuantas veces porque el reproductor interno tarda un poco
+         en estar listo para recibir comandos. */
+      iframe.addEventListener("load", function () {
+        let attempts = 0;
+
+        const raiseVolume = setInterval(function () {
+          attempts += 1;
+
+          ["unMute", "setVolume"].forEach(function (command) {
+            iframe.contentWindow.postMessage(
+              JSON.stringify({
+                event: "command",
+                func: command,
+                args: command === "setVolume" ? [100] : [],
+              }),
+              "https://www.youtube.com"
+            );
+          });
+
+          if (attempts >= 5) clearInterval(raiseVolume);
+        }, 400);
+      });
 
       container.innerHTML = "";
       container.appendChild(iframe);
